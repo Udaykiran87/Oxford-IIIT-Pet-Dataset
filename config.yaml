@@ -5,5 +5,19 @@ artifacts:
   PRETRAINED_MODEL_URL : 'http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_mobilenet_v2_fpnlite_320x320_coco17_tpu-8.tar.gz'
   TF_RECORD_SCRIPT_NAME : 'generate_tfrecord.py'
   LABEL_MAP_NAME : 'label_map.pbtxt'
-  WORKSPACE_DIR : 'Tensorflow'
+  TENSORFLOW_DIR : 'Tensorflow'
+
+paths:
+  WORKSPACE_PATH : workspace
+  SCRIPTS_PATH : scripts
+  APIMODEL_PATH : models
+  ANNOTATION_PATH : annotations
+  IMAGE_PATH : images
+  MODEL_PATH : models
+  PRETRAINED_MODEL_PATH : pre-trained-models
+  OUTPUT_PATH : export
+  TFJS_PATH : tfjsexport
+  TFLITE_PATH : tfliteexport
+  PROTOC_PATH : protoc
+
 
