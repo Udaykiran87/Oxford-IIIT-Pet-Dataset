@@ -5,7 +5,9 @@ from typing import ClassVar
 class CustomException(Exception):
     def __init__(self, error_message: Exception, error_detail: ClassVar) -> None:
         super().__init__(error_message)
-        self.error_message = None
+        self.error_message = CustomException.get_detaild_error_message(
+            error_message=error_message, error_detail=error_detail
+        )
 
     @staticmethod
     def get_detaild_error_message(error_message: Exception, error_detail: sys) -> str:
