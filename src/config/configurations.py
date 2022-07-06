@@ -1,4 +1,3 @@
-from msilib.schema import CustomAction
 import os
 import logging
 import sys
