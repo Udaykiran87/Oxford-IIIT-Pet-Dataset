@@ -16,7 +16,7 @@ class CustomException(Exception):
         error_detail: object of sys module
         """
 
-        _, _, exec_tb = error_detail.exec_info()
+        _, _, exec_tb = error_detail.exc_info()
         exception_block_line_number = exec_tb.tb_frame.f_lineno
         try_block_line_number = exec_tb.tb_lineno
         file_name = exec_tb.tb_frame.f_code.co_filename
