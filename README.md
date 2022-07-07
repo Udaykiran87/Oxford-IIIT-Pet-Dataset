@@ -5,7 +5,7 @@ Oxford-IIIT-Pet-Dataset object detection using TFOD2.
 ### STEP 00- Clone repository and chnage directory to Oxford-IIIT-Pet-Dataset directory
 
 ```bash
-https://github.com/Udaykiran87/Oxford-IIIT-Pet-Dataset.git
+git clone https://github.com/Udaykiran87/Oxford-IIIT-Pet-Dataset.git
 
 cd Oxford-IIIT-Pet-Dataset
 ```
