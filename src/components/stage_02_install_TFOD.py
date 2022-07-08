@@ -5,7 +5,6 @@ import wget
 import subprocess
 from subprocess import Popen, PIPE, STDOUT
 from src.config import Configuration
-from src.utils import create_directories
 from src.constants import *
 from src.exception import CustomException
 from src.entity import PathConfig
@@ -49,7 +48,6 @@ class TFOD_Install:
             logger.info(f">>>>>>TFOD installation Started<<<<<<<")
             if os.name == "posix":
                 logger.info(f">>>>>>Posix System<<<<<<<")
-                # os.popen("sh scripts/tfod_install_posix.sh")
                 cmd = f"apt-get install protobuf-compiler"
                 display1 = subprocess.check_output(cmd, shell=True).decode()
                 cmd = f"cd Tensorflow/models/research && protoc object_detection/protos/*.proto --python_out=. && cp object_detection/packages/tf2/setup.py . && python -m pip install ."
@@ -58,32 +56,42 @@ class TFOD_Install:
                 logger.info(f"{display}")
             if os.name == "nt":
                 logger.info(f">>>>>>Nt System<<<<<<<")
-                # os.popen("sh scripts/tfod_install_nt.sh")
-                url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.20.1/protoc-3.20.1-win64.zip"
-                wget.download(url)
-                cmd = f"move protoc-3.20.1-win64.zip {self.path_config.protoc_path}"
-                display1 = subprocess.check_output(cmd, shell=True).decode()
-                cmd = f"cd {self.path_config.protoc_path} && unzip protoc-3.20.1-win64.zip"
-                display2 = subprocess.check_output(cmd, shell=True).decode()
+                if not os.path.exists(
+                    os.path.join(
+                        self.path_config.apimodel_path, "protoc-3.20.1-win64.zip"
+                    )
+                ):
+                    logger.info(f">>>>>>Download and install protoc started<<<<<<")
+                    url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.20.1/protoc-3.20.1-win64.zip"
+                    wget.download(url)
+                    cmd = f"move protoc-3.20.1-win64.zip {self.path_config.protoc_path}"
+                    display = subprocess.check_output(cmd, shell=True).decode()
+                    logger.info(f"{display}")
+                    cmd = f"cd {self.path_config.protoc_path} && unzip protoc-3.20.1-win64.zip"
+                    display = subprocess.check_output(cmd, shell=True).decode()
+                    logger.info(f"{display}")
+                    logger.info(f">>>>>>Protoc installation Finished<<<<<<<")
+
                 os.environ["PATH"] += os.pathsep + os.path.abspath(
                     os.path.join(f"{self.path_config.protoc_path}", "bin")
                 )
-                # cmd = f"cd {self.path_config.apimodel_path} && cd research && protoc object_detection/protos/*.proto --python_out=. && copy object_detection\\packages\\tf2\\setup.py setup.py && python setup.py build && python setup.py install"
+                logger.info(f">>>>>>Protobuff Installation/Compilation Started<<<<<<")
+                cmd = f"pip install protobuf==3.19.4"
+                display = subprocess.check_output(cmd, shell=True).decode()
+                logger.info(f"{display}")
+                cmd = f"cp scripts/builder.py env/Lib/site-packages/google/protobuf/internal"
+                display = subprocess.check_output(cmd, shell=True).decode()
+                logger.info(f"{display}")
                 cmd = f"cd {self.path_config.apimodel_path} && cd research && protoc object_detection/protos/*.proto --python_out=."
-                display3 = subprocess.check_output(cmd, shell=True).decode()
-                cmd = f"cd {self.path_config.apimodel_path} && cd research/slim && pip install -e ."
-                display4 = subprocess.check_output(cmd, shell=True).decode()
-                cmd = f"pip uninstall protobuf -y"
-                display5 = subprocess.check_output(cmd, shell=True).decode()
-                cmd = f"pip install protobuf==3.15.7"
-                display6 = subprocess.check_output(cmd, shell=True).decode()
-                cmd = f"pip install pyparsing==2.4.7"
-                display7 = subprocess.check_output(cmd, shell=True).decode()
-                cmd = f"pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI"
-                display8 = subprocess.check_output(cmd, shell=True).decode()
-                # cmd = f"cd {self.path_config.apimodel_path} && cd research && copy object_detection/packages/tf2/setup.py setup.py && python setup.py build && python setup.py install"
+                display = subprocess.check_output(cmd, shell=True).decode()
+                logger.info(f"{display}")
+                logger.info(f">>>>>>Protobuff Installation/Compilation finished<<<<<<")
+
+                logger.info(f">>>>>>Install Object Detection API started<<<<<<")
                 cmd = f"cd {self.path_config.apimodel_path} && cd research && cp object_detection/packages/tf2/setup.py . && python -m pip install ."
-                display9 = subprocess.check_output(cmd, shell=True).decode()
+                display = subprocess.check_output(cmd, shell=True).decode()
+                logger.info(f"{display}")
+                logger.info(f">>>>>>Install Object Detection API finished<<<<<<")
                 VERIFICATION_SCRIPT = os.path.join(
                     self.path_config.apimodel_path,
                     "research",
@@ -91,22 +99,13 @@ class TFOD_Install:
                     "builders",
                     "model_builder_tf2_test.py",
                 )
+
                 # Verify Installation
+                logger.info(f">>>>>>TFOD installation Verification started<<<<<<<")
                 cmd = f"python {VERIFICATION_SCRIPT} "
-                display10 = subprocess.check_output(cmd, shell=True).decode()
-                display = (
-                    display1
-                    + display2
-                    + display3
-                    + display4
-                    + display5
-                    + display6
-                    + display7
-                    + display8
-                    + display9
-                    + display10
-                )
+                display = subprocess.check_output(cmd, shell=True).decode()
                 logger.info(f"{display}")
+                logger.info(f">>>>>>TFOD installation Verification finished<<<<<<<")
             logger.info(f">>>>>>TFOD installation Finished<<<<<<<")
         except Exception as e:
             message = CustomException(e, sys)
