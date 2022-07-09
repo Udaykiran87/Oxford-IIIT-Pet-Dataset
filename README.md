@@ -27,3 +27,8 @@ source activate ./env
 ```bash
 python src/components/stage_01_TFOD_setup.py
 ```
+
+### STEP 04- Install TFOD2: Stage 02
+```bash
+python src/components/stage_02_install_TFOD.py
+```
