@@ -6,6 +6,8 @@ artifacts:
   TF_RECORD_SCRIPT_NAME : 'generate_tfrecord.py'
   LABEL_MAP_NAME : 'label_map.pbtxt'
   TENSORFLOW_DIR : 'Tensorflow'
+  DATASET_IMAGE_URL : 'http://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz'
+  DATASET_ANNOTATION_URL : 'http://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz'
 
 paths:
   WORKSPACE_PATH : workspace
