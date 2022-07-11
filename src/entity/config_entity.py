@@ -26,6 +26,5 @@ UrlNameConfig = namedtuple(
         "dataset_annotation_url",
         "pretrained_model_name",
         "pretrained_model_url",
-        "label_map_path",
     ],
 )

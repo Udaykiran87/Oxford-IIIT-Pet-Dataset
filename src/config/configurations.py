@@ -87,28 +87,16 @@ class Configuration:
         Returns: UrlNameConfig object.
         """
         try:
-            workspace_dir = self.config[PATH_KEY][WORKSPACE_NAME]
-            annotation_dir = self.config[PATH_KEY][ANNOTATION_PATH]
             dataset_image_url = self.config[ARTIFACTS_KEY][DATASET_IMAGE_URL]
             dataset_annotation_url = self.config[ARTIFACTS_KEY][DATASET_ANNOTATION_URL]
             pretrained_model_name = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_NAME]
             pretrained_model_url = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_URL]
-            label_map_name = self.config[ARTIFACTS_KEY][LABEL_MAP_NAME]
-
-            artifcats_path = self.config[ARTIFACTS_KEY][ARTIFACTS_DIR]
-            tensorflow_path = self.config[ARTIFACTS_KEY][TENSORFLOW_DIR]
-            workspace_path = os.path.join(
-                artifcats_path, tensorflow_path, workspace_dir
-            )
-            annotation_path = os.path.join(workspace_path, annotation_dir)
-            label_map_path = os.path.join(annotation_path, label_map_name)
 
             url_name_config = UrlNameConfig(
                 dataset_image_url=dataset_image_url,
                 dataset_annotation_url=dataset_annotation_url,
                 pretrained_model_name=pretrained_model_name,
                 pretrained_model_url=pretrained_model_url,
-                label_map_path=label_map_path,
             )
             return url_name_config
         except Exception as e:
