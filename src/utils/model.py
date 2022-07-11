@@ -85,37 +85,25 @@ class Model:
             raise message
 
     @staticmethod
-    def create_pet_tf_record(path_config):
+    def create_tf_record(path_config):
         """
         This function converts raw Oxford-IIIT Pet dataset into TFRecords.
         Returns: None
         """
         logger.info(">>>>>TFRecords Creation will start now<<<<<<")
-        if not os.path.exists(
-            os.path.join(path_config.annotation_path), "pet_faces_train.record-*"
-        ) or not os.path.exists(
-            os.path.join(path_config.annotation_path), "pet_faces_val.record-*"
-        ):
-            tfrecord_script = os.path.join(
-                path_config.apimodel_path,
-                "research",
-                "object_detection",
-                "dataset_tools",
-                "create_pet_tf_record.py",
-            )
-            cmd = f"python {tfrecord_script} --label_map_path={url_name_config.label_map_path} --data_dir={path_config.annotation_path} --output_dir={path_config.annotation_path}."
-            display = subprocess.check_output(cmd, shell=True).decode()
-            logger.info(f"{display}")
-            logger.info(
-                f"Train and validation tfrecords are created at {path_config.annotation_path}"
-            )
-        else:
-            logger.info(
-                f"Train and validation tfrecords were not created as it is alreday present at {path_config.annotation_path}."
-            )
+        tfrecord_script = os.path.join(
+            "object_detection",
+            "dataset_tools",
+            "create_pet_tf_record.py",
+        )
 
-    def create_TF_record(self):
-        pass
+        label_map_path = os.path.join("object_detection", "data", "pet_label_map.pbtxt")
+        cmd = f"cd {path_config.apimodel_path} && cd research && python {tfrecord_script} --label_map_path={label_map_path} --data_dir={os.path.abspath(path_config.workspace_path)} --output_dir={os.path.abspath(path_config.tfrecords_path)}."
+        display = subprocess.check_output(cmd, shell=True).decode()
+        logger.info(f"{display}")
+        logger.info(
+            f"Train and validation tfrecords are created at {path_config.tfrecords_path}"
+        )
 
     def copy_update_model_config(self):
         pass
