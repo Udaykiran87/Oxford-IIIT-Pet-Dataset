@@ -32,3 +32,8 @@ python src/components/stage_01_TFOD_setup.py
 ```bash
 python src/components/stage_02_install_TFOD.py
 ```
+
+### STEP 05- Download dataset and prepare data: Stage 03
+```bash
+python src/components/stage_03_prepare_data.py
+```
