@@ -50,7 +50,7 @@ class TFOD_Install:
                 logger.info(f">>>>>>Posix System<<<<<<<")
                 cmd = f"apt-get install protobuf-compiler"
                 display1 = subprocess.check_output(cmd, shell=True).decode()
-                cmd = f"cd Tensorflow/models/research && protoc object_detection/protos/*.proto --python_out=. && cp object_detection/packages/tf2/setup.py . && python -m pip install ."
+                cmd = f"cd {self.path_config.apimodel_path} && cd research && protoc object_detection/protos/*.proto --python_out=. && cp object_detection/packages/tf2/setup.py . && python -m pip install ."
                 display2 = subprocess.check_output(cmd, shell=True).decode()
                 display = display1 + display2
                 logger.info(f"{display}")
