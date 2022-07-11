@@ -5,7 +5,7 @@ import sys
 from src.utils import read_yaml
 from src.constants import *
 from src.exception import CustomException
-from src.entity import PathConfig
+from src.entity import PathConfig, UrlNameConfig
 
 logging.basicConfig(
     filename=os.path.join("logs", "running_logs.log"),
@@ -40,11 +40,8 @@ class Configuration:
             tfjs_dir = self.config[PATH_KEY][TFJS_NAME]
             tflite_dir = self.config[PATH_KEY][TFLITE_NAME]
             protoc_dir = self.config[PATH_KEY][PROTOC_NAME]
-            dataset_image_url = self.config[ARTIFACTS_KEY][DATASET_IMAGE_URL]
-            dataset_annotation_url = self.config[ARTIFACTS_KEY][DATASET_ANNOTATION_URL]
-            pretrained_model_name = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_NAME]
-            pretrained_model_url = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_URL]
             pretrained_model_dir = self.config[PATH_KEY][PRETRAINED_MODEL_PATH]
+            tfrecords_dir = self.config[PATH_KEY][TFRECORDS_PATH]
 
             artifcats_path = self.config[ARTIFACTS_KEY][ARTIFACTS_DIR]
             tensorflow_path = self.config[ARTIFACTS_KEY][TENSORFLOW_DIR]
@@ -63,6 +60,7 @@ class Configuration:
             tflite_path = os.path.join(checkpoint_path, tflite_dir)
             protoc_path = os.path.join(artifcats_path, tensorflow_path, protoc_dir)
             pretrained_model_path = os.path.join(workspace_path, pretrained_model_dir)
+            tfrecords_path = os.path.join(workspace_path, tfrecords_dir)
 
             tfod_path_config = PathConfig(
                 workspace_path=workspace_path,
@@ -76,13 +74,43 @@ class Configuration:
                 tfjs_path=tfjs_path,
                 tflite_path=tflite_path,
                 protoc_path=protoc_path,
+                pretrained_model_path=pretrained_model_path,
+                tfrecords_path=tfrecords_path,
+            )
+            return tfod_path_config
+        except Exception as e:
+            logger.exception(e)
+            raise CustomException(e, sys)
+
+    def get_url_name_config(self) -> UrlNameConfig:
+        """This function reads all url, name configurations.
+        Returns: UrlNameConfig object.
+        """
+        try:
+            workspace_dir = self.config[PATH_KEY][WORKSPACE_NAME]
+            annotation_dir = self.config[PATH_KEY][ANNOTATION_PATH]
+            dataset_image_url = self.config[ARTIFACTS_KEY][DATASET_IMAGE_URL]
+            dataset_annotation_url = self.config[ARTIFACTS_KEY][DATASET_ANNOTATION_URL]
+            pretrained_model_name = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_NAME]
+            pretrained_model_url = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_URL]
+            label_map_name = self.config[ARTIFACTS_KEY][LABEL_MAP_NAME]
+
+            artifcats_path = self.config[ARTIFACTS_KEY][ARTIFACTS_DIR]
+            tensorflow_path = self.config[ARTIFACTS_KEY][TENSORFLOW_DIR]
+            workspace_path = os.path.join(
+                artifcats_path, tensorflow_path, workspace_dir
+            )
+            annotation_path = os.path.join(workspace_path, annotation_dir)
+            label_map_path = os.path.join(annotation_path, label_map_name)
+
+            url_name_config = UrlNameConfig(
                 dataset_image_url=dataset_image_url,
                 dataset_annotation_url=dataset_annotation_url,
                 pretrained_model_name=pretrained_model_name,
                 pretrained_model_url=pretrained_model_url,
-                pretrained_model_path=pretrained_model_path,
+                label_map_path=label_map_path,
             )
-            return tfod_path_config
+            return url_name_config
         except Exception as e:
             logger.exception(e)
             raise CustomException(e, sys)

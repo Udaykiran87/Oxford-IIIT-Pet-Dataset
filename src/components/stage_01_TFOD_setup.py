@@ -5,7 +5,7 @@ from src.config import Configuration
 from src.utils import create_directories
 from src.constants import *
 from src.exception import CustomException
-from src.entity import PathConfig
+from src.entity import PathConfig, UrlNameConfig
 
 logging.basicConfig(
     filename=os.path.join("logs", "running_logs.log"),
@@ -17,9 +17,10 @@ logger = logging.getLogger(__name__)
 
 
 class TFOD_Setup:
-    def __init__(self, tfod_path_config=PathConfig):
+    def __init__(self, tfod_path_config=PathConfig, tfod_url_name_config=UrlNameConfig):
         logger.info(">>>>>TFOD setup started<<<<<<")
         self.path_config = tfod_path_config
+        self.url_name_config = tfod_url_name_config
 
     def create_dirs(self) -> None:
         """
@@ -38,5 +39,7 @@ class TFOD_Setup:
 
 if __name__ == "__main__":
     project_config = Configuration()
-    tfod_setup = TFOD_Setup(project_config.get_paths_config())
+    tfod_setup = TFOD_Setup(
+        project_config.get_paths_config(), project_config.get_url_name_config()
+    )
     tfod_setup.create_dirs()

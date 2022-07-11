@@ -14,10 +14,18 @@ PathConfig = namedtuple(
         "tfjs_path",
         "tflite_path",
         "protoc_path",
+        "pretrained_model_path",
+        "tfrecords_path",
+    ],
+)
+
+UrlNameConfig = namedtuple(
+    "UrlNameConfig",
+    [
         "dataset_image_url",
         "dataset_annotation_url",
         "pretrained_model_name",
         "pretrained_model_url",
-        "pretrained_model_path",
+        "label_map_path",
     ],
 )

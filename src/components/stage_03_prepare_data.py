@@ -5,7 +5,7 @@ import wget
 import subprocess
 from src.config import Configuration
 from src.exception import CustomException
-from src.entity import PathConfig
+from src.entity import PathConfig, UrlNameConfig
 
 
 logging.basicConfig(
@@ -18,9 +18,10 @@ logger = logging.getLogger(__name__)
 
 
 class Download_Dataset:
-    def __init__(self, tfod_path_config=PathConfig):
+    def __init__(self, tfod_path_config=PathConfig, tfod_url_name_config=UrlNameConfig):
         logger.info(">>>>>Download of OXFORD-III-PET-Dataset<<<<<<")
         self.path_config = tfod_path_config
+        self.url_name_config = tfod_url_name_config
 
     def download_data(self) -> None:
         """
@@ -40,7 +41,7 @@ class Download_Dataset:
                     logger.info(
                         ">>>>>Download of OXFORD-III-PET-Dataset (Images) started<<<<<<"
                     )
-                    wget.download(self.path_config.dataset_image_url)
+                    wget.download(self.url_name_config.dataset_image_url)
                     cmd = f"mv images.tar.gz {self.path_config.workspace_path}"
                     display = subprocess.check_output(cmd, shell=True).decode()
                     logger.info(f"{display}")
@@ -61,7 +62,7 @@ class Download_Dataset:
                     logger.info(
                         ">>>>>Download of OXFORD-III-PET-Dataset (Annotations) started<<<<<<"
                     )
-                    wget.download(self.path_config.dataset_annotation_url)
+                    wget.download(self.url_name_config.dataset_annotation_url)
                     cmd = f"mv annotations.tar.gz {self.path_config.workspace_path}"
                     display = subprocess.check_output(cmd, shell=True).decode()
                     logger.info(f"{display}")
@@ -83,7 +84,7 @@ class Download_Dataset:
                     logger.info(
                         ">>>>>Download of OXFORD-III-PET-Dataset (Images) started<<<<<<"
                     )
-                    wget.download(self.path_config.dataset_image_url)
+                    wget.download(self.url_name_config.dataset_image_url)
                     cmd = f"move images.tar.gz {self.path_config.workspace_path}"
                     display = subprocess.check_output(cmd, shell=True).decode()
                     logger.info(f"{display}")
@@ -107,7 +108,7 @@ class Download_Dataset:
                     logger.info(
                         ">>>>>Download of OXFORD-III-PET-Dataset (Annotations) started<<<<<<"
                     )
-                    wget.download(self.path_config.dataset_annotation_url)
+                    wget.download(self.url_name_config.dataset_annotation_url)
                     cmd = f"move annotations.tar.gz {self.path_config.workspace_path}"
                     display = subprocess.check_output(cmd, shell=True).decode()
                     logger.info(f"{display}")
@@ -131,5 +132,7 @@ class Download_Dataset:
 
 if __name__ == "__main__":
     project_config = Configuration()
-    download = Download_Dataset(project_config.get_paths_config())
+    download = Download_Dataset(
+        project_config.get_paths_config(), project_config.get_url_name_config()
+    )
     download.download_data()
