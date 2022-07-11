@@ -32,6 +32,7 @@ class Custom_Train:
             self.path_config, self.url_name_config
         )
         self.model.update_model_config()
+        self.model.custom_model_train()
 
 
 if __name__ == "__main__":

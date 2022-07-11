@@ -187,7 +187,7 @@ class Model:
                 text_format.Merge(proto_str, pipeline_config)
 
             pipeline_config.model.ssd.num_classes = 37
-            pipeline_config.train_config.batch_size = 32
+            pipeline_config.train_config.batch_size = 16
             pipeline_config.train_config.fine_tune_checkpoint = os.path.join(
                 self.path_config.pretrained_model_path,
                 self.url_name_config.pretrained_model_name,
@@ -218,6 +218,30 @@ class Model:
                 f.write(config_text)
             logger.info(
                 f">>>>>Model config file update of {os.path.join(self.path_config.checkpoint_path, 'pipeline.config')} finished.<<<<<<"
+            )
+        except Exception as e:
+            message = CustomException(e, sys)
+            logger.error(message.error_message)
+            raise message
+
+    def custom_model_train(self):
+        """
+        This function is used to perform custom model training.
+        Returns: None
+        """
+        try:
+            logger.info(f">>>>>Custom Model training started<<<<<<")
+            TRAINING_SCRIPT = os.path.join(
+                self.path_config.apimodel_path,
+                "research",
+                "object_detection",
+                "model_main_tf2.py",
+            )
+            cmd = f"python {TRAINING_SCRIPT} --model_dir={self.path_config.checkpoint_path} --pipeline_config_path={os.path.join(self.path_config.checkpoint_path, 'pipeline.config')} --num_train_steps=2000"
+            display = subprocess.check_output(cmd, shell=True).decode()
+            logger.info(f"{display}")
+            logger.info(
+                f">>>>>Custom Model training finished and checkpoints are saved at {self.path_config.checkpoint_path}<<<<<<"
             )
         except Exception as e:
             message = CustomException(e, sys)
