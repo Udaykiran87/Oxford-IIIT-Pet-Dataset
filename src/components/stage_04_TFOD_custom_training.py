@@ -28,6 +28,9 @@ class Custom_Train:
     def train_model(self):
         self.model.download_model(self.path_config, self.url_name_config)
         self.model.create_tf_record(self.path_config)
+        self.model.copy_model_config_to_train_folder(
+            self.path_config, self.url_name_config
+        )
 
 
 if __name__ == "__main__":
