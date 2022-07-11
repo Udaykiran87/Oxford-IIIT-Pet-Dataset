@@ -5,6 +5,11 @@ import wget
 import subprocess
 import re
 from src.exception import CustomException
+import tensorflow as tf
+from object_detection.utils import config_util
+from object_detection.protos import pipeline_pb2
+from google.protobuf import text_format
+from src.entity import PathConfig, UrlNameConfig
 
 
 logging.basicConfig(
@@ -17,8 +22,12 @@ logger = logging.getLogger(__name__)
 
 
 class Model:
-    def __init__(self):
-        pass
+    def __init__(self, tfod_path_config=PathConfig, tfod_url_name_config=UrlNameConfig):
+        self.path_config = tfod_path_config
+        self.url_name_config = tfod_url_name_config
+        self.config = config_util.get_configs_from_pipeline_file(
+            os.path.join(self.path_config.checkpoint_path, "pipeline.config")
+        )
 
     @staticmethod
     def download_model(path_config, url_name_config):
@@ -156,5 +165,61 @@ class Model:
             logger.error(message.error_message)
             raise message
 
-    def copy_update_model_config(self):
-        pass
+    def update_model_config(self):
+        """
+        This function updates the model configuration file for training.
+        Returns: None
+        """
+        try:
+            logger.info(f">>>>>Model config file update will start now<<<<<<")
+            label_map_path = os.path.join(
+                self.path_config.apimodel_path,
+                "research",
+                "object_detection",
+                "data",
+                "pet_label_map.pbtxt",
+            )
+            pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()
+            with tf.io.gfile.GFile(
+                os.path.join(self.path_config.checkpoint_path, "pipeline.config"), "r"
+            ) as f:
+                proto_str = f.read()
+                text_format.Merge(proto_str, pipeline_config)
+
+            pipeline_config.model.ssd.num_classes = 37
+            pipeline_config.train_config.batch_size = 32
+            pipeline_config.train_config.fine_tune_checkpoint = os.path.join(
+                self.path_config.pretrained_model_path,
+                self.url_name_config.pretrained_model_name,
+                "checkpoint",
+                "ckpt-0",
+            )
+            pipeline_config.train_config.fine_tune_checkpoint_type = "detection"
+            pipeline_config.train_input_reader.label_map_path = label_map_path
+            pipeline_config.train_input_reader.tf_record_input_reader.input_path[:] = [
+                os.path.join(
+                    self.path_config.tfrecords_path,
+                    "pet_faces_train.record-?????-of-00010",
+                )
+            ]
+            pipeline_config.eval_input_reader[0].label_map_path = label_map_path
+            pipeline_config.eval_input_reader[0].tf_record_input_reader.input_path[
+                :
+            ] = [
+                os.path.join(
+                    self.path_config.tfrecords_path,
+                    "pet_faces_val.record-?????-of-00010",
+                )
+            ]
+            config_text = text_format.MessageToString(pipeline_config)
+            with tf.io.gfile.GFile(
+                os.path.join(self.path_config.checkpoint_path, "pipeline.config"), "wb"
+            ) as f:
+                f.write(config_text)
+            logger.info(
+                f">>>>>Model config file update of {os.path.join(self.path_config.checkpoint_path, 'pipeline.config')} finished.<<<<<<"
+            )
+        except Exception as e:
+            message = CustomException(e, sys)
+            logger.error(message.error_message)
+            raise message

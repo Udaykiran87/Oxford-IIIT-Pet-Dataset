@@ -23,7 +23,7 @@ class Custom_Train:
         logger.info(">>>>>TFOD Custom Model Training preparation started<<<<<<")
         self.path_config = tfod_path_config
         self.url_name_config = tfod_url_name_config
-        self.model = Model()
+        self.model = Model(tfod_path_config, tfod_url_name_config)
 
     def train_model(self):
         self.model.download_model(self.path_config, self.url_name_config)
@@ -31,6 +31,7 @@ class Custom_Train:
         self.model.copy_model_config_to_train_folder(
             self.path_config, self.url_name_config
         )
+        self.model.update_model_config()
 
 
 if __name__ == "__main__":
