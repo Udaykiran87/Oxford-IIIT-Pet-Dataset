@@ -42,6 +42,9 @@ class Configuration:
             protoc_dir = self.config[PATH_KEY][PROTOC_NAME]
             dataset_image_url = self.config[ARTIFACTS_KEY][DATASET_IMAGE_URL]
             dataset_annotation_url = self.config[ARTIFACTS_KEY][DATASET_ANNOTATION_URL]
+            pretrained_model_name = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_NAME]
+            pretrained_model_url = self.config[ARTIFACTS_KEY][PRETRAINED_MODEL_URL]
+            pretrained_model_dir = self.config[PATH_KEY][PRETRAINED_MODEL_PATH]
 
             artifcats_path = self.config[ARTIFACTS_KEY][ARTIFACTS_DIR]
             tensorflow_path = self.config[ARTIFACTS_KEY][TENSORFLOW_DIR]
@@ -59,6 +62,7 @@ class Configuration:
             tfjs_path = os.path.join(checkpoint_path, tfjs_dir)
             tflite_path = os.path.join(checkpoint_path, tflite_dir)
             protoc_path = os.path.join(artifcats_path, tensorflow_path, protoc_dir)
+            pretrained_model_path = os.path.join(workspace_path, pretrained_model_dir)
 
             tfod_path_config = PathConfig(
                 workspace_path=workspace_path,
@@ -74,6 +78,9 @@ class Configuration:
                 protoc_path=protoc_path,
                 dataset_image_url=dataset_image_url,
                 dataset_annotation_url=dataset_annotation_url,
+                pretrained_model_name=pretrained_model_name,
+                pretrained_model_url=pretrained_model_url,
+                pretrained_model_path=pretrained_model_path,
             )
             return tfod_path_config
         except Exception as e:

@@ -16,5 +16,8 @@ PathConfig = namedtuple(
         "protoc_path",
         "dataset_image_url",
         "dataset_annotation_url",
+        "pretrained_model_name",
+        "pretrained_model_url",
+        "pretrained_model_path",
     ],
 )
