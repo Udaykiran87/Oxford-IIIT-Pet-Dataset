@@ -37,3 +37,8 @@ python src/components/stage_02_install_TFOD.py
 ```bash
 python src/components/stage_03_prepare_data.py
 ```
+
+### STEP 06- Custom model training: Stage 04
+```bash
+python src/components/stage_04_TFOD_custom_training.py
+```
