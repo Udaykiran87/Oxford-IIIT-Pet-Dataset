@@ -1,4 +1,10 @@
-# Oxford-IIIT-Pet-Dataset
+## CUDA and cuDNN version
+```bash
+CUDA: 11.2
+cuDNN: 8.1
+```
+
+## Oxford-IIIT-Pet-Dataset
 Oxford-IIIT-Pet-Dataset object detection using TFOD2.
 
 ## STEPS-
