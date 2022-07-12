@@ -26,13 +26,14 @@ class Custom_Train:
         self.model = Model(tfod_path_config, tfod_url_name_config)
 
     def train_model(self):
-        self.model.download_model(self.path_config, self.url_name_config)
-        self.model.create_tf_record(self.path_config)
-        self.model.copy_model_config_to_train_folder(
-            self.path_config, self.url_name_config
-        )
-        self.model.update_model_config()
-        self.model.custom_model_train()
+        # self.model.download_model(self.path_config, self.url_name_config)
+        # self.model.create_tf_record(self.path_config)
+        # self.model.copy_model_config_to_train_folder(
+        #     self.path_config, self.url_name_config
+        # )
+        # self.model.update_model_config()
+        # self.model.custom_model_train()
+        self.model.model_eval()
 
 
 if __name__ == "__main__":

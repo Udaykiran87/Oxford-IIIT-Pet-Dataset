@@ -247,3 +247,25 @@ class Model:
             message = CustomException(e, sys)
             logger.error(message.error_message)
             raise message
+
+    def model_eval(self):
+        """
+        This function is used to evaluate the trained model.
+        Returns: None
+        """
+        try:
+            logger.info(f">>>>>Custom Model evaluation started<<<<<<")
+            EVALUATE_SCRIPT = os.path.join(
+                self.path_config.apimodel_path,
+                "research",
+                "object_detection",
+                "model_main_tf2.py",
+            )
+            cmd = f"python {EVALUATE_SCRIPT} --model_dir={self.path_config.checkpoint_path} --pipeline_config_path={os.path.join(self.path_config.checkpoint_path, 'pipeline.config')} --checkpoint_dir={self.path_config.checkpoint_path}"
+            display = subprocess.check_output(cmd, shell=True).decode()
+            logger.info(f"{display}")
+            logger.info(f">>>>>Model evaluation finished<<<<<<")
+        except Exception as e:
+            message = CustomException(e, sys)
+            logger.error(message.error_message)
+            raise message
