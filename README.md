@@ -46,5 +46,5 @@ python src/components/stage_03_prepare_data.py
 
 ### STEP 06- Custom model training: Stage 04
 ```bash
-python src/components/stage_04_TFOD_custom_training.py
+python src/components/stage_04_TFOD_custom_train_eval.py
 ```
