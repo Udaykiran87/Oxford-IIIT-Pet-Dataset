@@ -42,6 +42,7 @@ class Configuration:
             protoc_dir = self.config[PATH_KEY][PROTOC_NAME]
             pretrained_model_dir = self.config[PATH_KEY][PRETRAINED_MODEL_PATH]
             tfrecords_dir = self.config[PATH_KEY][TFRECORDS_PATH]
+            testimages_dir = self.config[PATH_KEY][TEST_IMAGES_PATH]
 
             artifcats_path = self.config[ARTIFACTS_KEY][ARTIFACTS_DIR]
             tensorflow_path = self.config[ARTIFACTS_KEY][TENSORFLOW_DIR]
@@ -61,6 +62,7 @@ class Configuration:
             protoc_path = os.path.join(artifcats_path, tensorflow_path, protoc_dir)
             pretrained_model_path = os.path.join(workspace_path, pretrained_model_dir)
             tfrecords_path = os.path.join(workspace_path, tfrecords_dir)
+            test_images_path = os.path.join(workspace_path, testimages_dir)
 
             tfod_path_config = PathConfig(
                 workspace_path=workspace_path,
@@ -76,6 +78,7 @@ class Configuration:
                 protoc_path=protoc_path,
                 pretrained_model_path=pretrained_model_path,
                 tfrecords_path=tfrecords_path,
+                test_images_path=test_images_path,
             )
             return tfod_path_config
         except Exception as e:

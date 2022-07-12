@@ -22,5 +22,6 @@ paths:
   TFLITE_PATH : tfliteexport
   PROTOC_PATH : protoc
   TFRECORDS_PATH: tfrecords
+  TEST_IMAGES_PATH: test-images
 
 
