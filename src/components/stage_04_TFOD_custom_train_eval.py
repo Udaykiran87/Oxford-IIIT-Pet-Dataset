@@ -1,8 +1,5 @@
 import logging
-import sys
 import os
-import wget
-import subprocess
 from src.config import Configuration
 from src.constants import *
 from src.exception import CustomException
