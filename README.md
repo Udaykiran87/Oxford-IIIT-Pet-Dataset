@@ -56,3 +56,7 @@ python src/components/stage_05_predict.py
 ```bash
 python src/components/stage_06_freeze_graph.py
 ```
+### STEP 09- Tflite model conversion: Stage 07
+```bash
+python src/components/stage_07_tflite_conversion.py
+```
