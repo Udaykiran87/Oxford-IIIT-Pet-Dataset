@@ -48,3 +48,7 @@ python src/components/stage_03_prepare_data.py
 ```bash
 python src/components/stage_04_TFOD_custom_train_eval.py
 ```
+### STEP 07- Model prediction: Stage 05
+```bash
+python src/components/stage_05_predict.py
+```
