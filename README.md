@@ -52,3 +52,7 @@ python src/components/stage_04_TFOD_custom_train_eval.py
 ```bash
 python src/components/stage_05_predict.py
 ```
+### STEP 08- Freeze model graph: Stage 06
+```bash
+python src/components/stage_06_freeze_graph.py
+```
