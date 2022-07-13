@@ -23,5 +23,6 @@ paths:
   PROTOC_PATH : protoc
   TFRECORDS_PATH: tfrecords
   TEST_IMAGES_PATH: test-images
+  TEST_VIDEOS_PATH: test-viedo
 
 

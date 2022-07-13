@@ -17,6 +17,7 @@ PathConfig = namedtuple(
         "pretrained_model_path",
         "tfrecords_path",
         "test_images_path",
+        "test_videos_path",
     ],
 )
 
