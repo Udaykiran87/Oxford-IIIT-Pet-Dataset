@@ -4,6 +4,7 @@ import sys
 import cv2
 import numpy as np
 import tensorflow as tf
+import time
 from src.config import Configuration
 from src.constants import *
 from src.exception import CustomException
@@ -126,7 +127,8 @@ class Predict:
             cap = cv2.VideoCapture(video_path)
             width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
             height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
+            count = 1
+            fps = 0
             while cap.isOpened():
                 ret, frame = cap.read()
                 image_np = np.array(frame)
@@ -134,7 +136,9 @@ class Predict:
                 input_tensor = tf.convert_to_tensor(
                     np.expand_dims(image_np, 0), dtype=tf.float32
                 )
+                start = time.time()
                 detections = detect_fn(input_tensor, self.loaded_model)
+                end = time.time()
 
                 num_detections = int(detections.pop("num_detections"))
                 detections = {
@@ -163,9 +167,35 @@ class Predict:
                     agnostic_mode=False,
                 )
 
+                time_diff = end - start
+                fps_now = 1 / time_diff
+                fps += fps_now
+                avg_fps = fps / count
+                # font
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                # org
+                org = (50, 50)
+                # fontScale
+                fontScale = 1
+                # Blue color in BGR
+                color = (255, 0, 0)
+                # Line thickness of 2 px
+                thickness = 2
+                # Using cv2.putText() method
+                image_np_with_detections = cv2.putText(
+                    image_np_with_detections,
+                    f"FPS: {avg_fps}",
+                    org,
+                    font,
+                    fontScale,
+                    color,
+                    thickness,
+                    cv2.LINE_AA,
+                )
                 cv2.imshow(
                     "object detection", cv2.resize(image_np_with_detections, (800, 600))
                 )
+                count += 1
 
                 if cv2.waitKey(10) & 0xFF == ord("q"):
                     cap.release()
