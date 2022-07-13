@@ -192,7 +192,7 @@ if __name__ == "__main__":
     )
     predict.detection_from_image(image_path)
     video_path = os.path.join(
-        path_config.test_images_path,
+        path_config.test_videos_path,
         "cat_video.mp4",
     )
     predict.detection_from_video(video_path)
