@@ -5,7 +5,7 @@ import subprocess
 from src.config import Configuration
 from src.constants import *
 from src.exception import CustomException
-from src.entity import PathConfig, UrlNameConfig
+from src.entity import PathConfig
 
 logging.basicConfig(
     filename=os.path.join("logs", "running_logs.log"),
